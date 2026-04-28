@@ -1,0 +1,6 @@
+@StockNexusAPI_HostAddress = http://localhost:5195
+
+GET {{StockNexusAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
