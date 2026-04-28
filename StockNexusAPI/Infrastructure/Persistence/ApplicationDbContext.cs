@@ -14,6 +14,7 @@ namespace StockNexusAPI.Infrastructure.Persistence
         {
             base.OnModelCreating(builder);
 
+            //Scan for all IEntityTypeConfigurations in this assembly and apply them
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
