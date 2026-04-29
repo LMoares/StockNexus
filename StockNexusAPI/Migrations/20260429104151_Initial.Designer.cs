@@ -11,7 +11,7 @@ using StockNexusAPI.Infrastructure.Persistence;
 namespace StockNexusAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260428114840_Initial")]
+    [Migration("20260429104151_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

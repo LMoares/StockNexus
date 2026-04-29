@@ -8,6 +8,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 //JWT Config
 builder.Services.AddJWTAuthentication(builder.Configuration);
 
+builder.Services.AddApplicationServices();
+
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

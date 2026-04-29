@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using StockNexusAPI.Infrastructure.Persistence;
 using StockNexusAPI.Infrastructure.Services.Authentication;
 using System.Text;
+using StockNexusAPI.Application;
+using StockNexusAPI.Application.Interfaces;
 
 namespace StockNexusAPI.Infrastructure
 {
@@ -21,7 +21,7 @@ namespace StockNexusAPI.Infrastructure
 
         public static IServiceCollection AddJWTAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<JwtService>();
+            services.AddSingleton<IJwtTokenGenerator, JwtService>();
 
             services.AddAuthentication(options =>
             {
@@ -42,6 +42,16 @@ namespace StockNexusAPI.Infrastructure
                 };
             });
 
+            return services;
+        }
+
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        {
+            services.AddMediatR(cfg =>
+            {
+                //MediatR will scan the assembly containing the marker for any handlers, commands, or queries and register them automatically.
+                cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
+            });
 
             return services;
         }

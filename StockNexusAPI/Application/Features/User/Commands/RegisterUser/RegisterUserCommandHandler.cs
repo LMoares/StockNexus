@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StockNexusAPI.Infrastructure.Persistence;
 namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
 {
@@ -13,6 +14,13 @@ namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
 
         public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken token)
         {
+            Domain.Entities.User? managerExists = null;
+            
+            if (request.ManagerId != null)
+            {
+                managerExists = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.ManagerId.Value, token);
+            }
+
             var user = new Domain.Entities.User
             {
                 Email = request.Email,
@@ -20,7 +28,8 @@ namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
                 LastName = request.LastName,
                 Role = request.Role,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                ManagerId = request.ManagerId
+                ManagerId = request.ManagerId,
+                Manager = managerExists
             };
 
             _context.Users.Add(user);

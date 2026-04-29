@@ -7,9 +7,9 @@ namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
         public RegisterUserCommandValidator()
         {
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email is Required")
+                .NotEmpty().WithMessage("Email is Required.")
                 .EmailAddress().WithMessage("A valid Email Address is required.")
-                .MaximumLength(256);
+                .MaximumLength(256).WithMessage("Email cannot exceed 256 characters in length.");
 
             RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("Password is required.")
@@ -18,6 +18,10 @@ namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
                 .Matches(@"[0-9]").WithMessage("Password must contain at least one number.")
                 .Matches(@"[^a-zA-Z0-9]").WithMessage("Password must contain at least one special character")
                 .Must(x => !x.Contains(" ")).WithMessage("Password cannot contain whitespaces.");
+
+            RuleFor(x => x.ConfirmPassword)
+                .NotEmpty().WithMessage("Confirm password is required.")
+                .Equal(x => x.Password).WithMessage("Passwords do not match.");
 
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("First name is required.")
