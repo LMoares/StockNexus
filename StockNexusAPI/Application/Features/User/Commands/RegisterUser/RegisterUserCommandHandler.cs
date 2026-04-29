@@ -23,7 +23,7 @@ namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
 
             var user = new Domain.Entities.User
             {
-                Email = request.Email,
+                Email = request.Email.ToLower(),
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Role = request.Role,

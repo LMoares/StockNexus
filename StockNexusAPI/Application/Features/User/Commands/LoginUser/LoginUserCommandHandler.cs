@@ -19,7 +19,7 @@ namespace StockNexusAPI.Application.Features.User.Commands.LoginUser
 
         public async Task<string> Handle(LoginUserCommand request, CancellationToken token)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email, token);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email.ToLower(), token);
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             {
                 throw new UnauthorizedAccessException("Invalid email or password.");

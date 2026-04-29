@@ -6,6 +6,8 @@ using StockNexusAPI.Infrastructure.Services.Authentication;
 using System.Text;
 using StockNexusAPI.Application;
 using StockNexusAPI.Application.Interfaces;
+using StockNexusAPI.Application.Behaviors;
+using FluentValidation;
 
 namespace StockNexusAPI.Infrastructure
 {
@@ -51,7 +53,11 @@ namespace StockNexusAPI.Infrastructure
             {
                 //MediatR will scan the assembly containing the marker for any handlers, commands, or queries and register them automatically.
                 cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
+
+                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
+
+            services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
 
             return services;
         }
