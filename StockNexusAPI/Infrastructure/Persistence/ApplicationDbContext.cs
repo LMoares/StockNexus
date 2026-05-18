@@ -10,6 +10,10 @@ namespace StockNexusAPI.Infrastructure.Persistence
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<Stock> Stock { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
