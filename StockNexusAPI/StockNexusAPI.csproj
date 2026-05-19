@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Features\Product\Commands\DeleteProduct\" />
     <Folder Include="Domain\Interfaces\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
