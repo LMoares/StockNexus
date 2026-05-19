@@ -3,7 +3,7 @@ using StockNexusAPI.Infrastructure.Persistence;
 
 namespace StockNexusAPI.Application.Features.Product.Commands.RegisterProduct
 {
-    public class RegisterProductCommandHandler
+    public class RegisterProductCommandHandler : IRequestHandler<RegisterProductCommand, Unit>
     {
         private readonly ApplicationDbContext _context;
 

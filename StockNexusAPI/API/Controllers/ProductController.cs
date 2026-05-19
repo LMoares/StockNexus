@@ -25,11 +25,13 @@ namespace StockNexusAPI.API.Controllers
         }
 
         [HttpGet("getProducts")]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts([FromQuery] GetProductsQuery query)
         {
-            var result = await _mediator.Send(new GetProductsQuery());
+            var result = await _mediator.Send(query);
 
             return Ok(result);
         }
+
+
     }
 }

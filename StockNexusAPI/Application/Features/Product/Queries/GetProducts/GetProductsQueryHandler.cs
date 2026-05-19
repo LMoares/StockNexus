@@ -16,14 +16,28 @@ namespace StockNexusAPI.Application.Features.Product.Queries.GetProducts
 
         public async Task<IReadOnlyList<ProductDto>> Handle(GetProductsQuery request, CancellationToken token)
         {
-            return await _context.Products
-                .AsNoTracking()
+            var query = _context.Products.AsNoTracking();
+
+            if (!string.IsNullOrEmpty(request.SearchTerm))
+            {
+                query = query.Where(p => p.Description.Contains(request.SearchTerm));
+            }
+
+            var totalCount = await query.CountAsync(token);
+
+            var items = await query
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .Select(p => new ProductDto
                 {
+                    Id = p.Id,
                     Name = p.Name,
                     Description = p.Description,
                     UnitPrice = p.UnitPrice
-                }).ToListAsync(token);
+                })
+                .ToListAsync(token);
+
+            return items;
         }
     }
 }
