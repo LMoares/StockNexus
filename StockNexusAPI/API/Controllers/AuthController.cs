@@ -17,27 +17,11 @@ namespace StockNexusAPI.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("createAdmin")]
-        public async Task<IActionResult> CreateAdmin([FromBody] RegisterUserCommand command)
-        {
-            var result = await _mediator.Send(command);
-
-            return Ok(new { Message = "Admin user created successfully." });
-        }
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
             var jwtToken = await _mediator.Send(command);
             return Ok(new { Token = jwtToken });
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
-        {
-            var result = await _mediator.Send(command);
-            return Ok(new { Message = "User registered successfully." });
         }
     }
  }

@@ -18,7 +18,7 @@ namespace StockNexusAPI.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("registerProduct")]
+        [HttpPost("product")]
         public async Task<IActionResult> RegisterProduct([FromBody] RegisterProductCommand command)
         {
             var result = await _mediator.Send(command);
@@ -26,7 +26,7 @@ namespace StockNexusAPI.API.Controllers
             return Ok(new { Message = "Product registered successfully"});
         }
 
-        [HttpGet("getProducts")]
+        [HttpGet("products")]
         public async Task<IActionResult> GetProducts([FromQuery] GetProductsQuery query)
         {
             var result = await _mediator.Send(query);
@@ -34,7 +34,7 @@ namespace StockNexusAPI.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("getProductById")]
+        [HttpGet("productById")]
         public async Task<IActionResult> GetProductById([FromQuery] int id)
         {
             var result = await _mediator.Send(new GetProductByIdQuery { Id = id });
@@ -42,7 +42,7 @@ namespace StockNexusAPI.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("deleteProduct/{id}")]
+        [HttpDelete("product/{id}")]
         public async Task<IActionResult> DeleteProduct([FromRoute] int id)
         {
             await _mediator.Send(new DeleteProductCommand { Id = id });
