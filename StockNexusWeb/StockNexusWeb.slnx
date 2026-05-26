@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="StockNexusWeb.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
