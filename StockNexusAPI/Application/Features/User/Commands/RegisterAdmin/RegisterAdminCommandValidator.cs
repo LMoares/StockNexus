@@ -1,10 +1,9 @@
 ﻿using FluentValidation;
-
-namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
+namespace StockNexusAPI.Application.Features.User.Commands.RegisterAdmin
 {
-    public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+    public class RegisterAdminCommandValidator : AbstractValidator<RegisterAdminCommand>
     {
-        public RegisterUserCommandValidator()
+        public RegisterAdminCommandValidator()
         {
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is Required.")
@@ -30,10 +29,6 @@ namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
             RuleFor(x => x.LastName)
                 .NotEmpty().WithMessage("Last name is required.")
                 .MaximumLength(100).WithMessage("Last name cannot exceed 100 characters in length.");
-
-            RuleFor(c => c.Role)
-                .IsInEnum().WithMessage("The selected role is invalid")
-                .NotEqual(Domain.Enums.UserRole.Admin).WithMessage("This endpoint cannot create Administrators.");
         }
     }
 }

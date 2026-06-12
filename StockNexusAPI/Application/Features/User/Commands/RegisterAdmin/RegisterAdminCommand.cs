@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using StockNexusAPI.Domain.Enums;
-namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
+namespace StockNexusAPI.Application.Features.User.Commands.RegisterAdmin
 {
-    public class RegisterUserCommand : IRequest<Unit>
+    public class RegisterAdminCommand : IRequest<Unit>
     {
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
@@ -10,6 +10,5 @@ namespace StockNexusAPI.Application.Features.User.Commands.RegisterUser
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public int? ManagerId { get; set; }
-        public UserRole Role { get; set; }
     }
 }
