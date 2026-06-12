@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockNexusAPI.Application.Features.Product.Commands.DeleteProduct;
 using StockNexusAPI.Application.Features.Product.Commands.RegisterProduct;
@@ -8,7 +9,7 @@ using StockNexusAPI.Application.Features.Product.Queries.GetProducts;
 namespace StockNexusAPI.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/products")]
     public class ProductController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -18,15 +19,17 @@ namespace StockNexusAPI.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("product")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HttpPost]
         public async Task<IActionResult> RegisterProduct([FromBody] RegisterProductCommand command)
         {
             var result = await _mediator.Send(command);
 
-            return Ok(new { Message = "Product registered successfully"});
+            return StatusCode(201, new { Message = "Product registered successfully"});
         }
 
-        [HttpGet("products")]
+        [Authorize]
+        [HttpGet]
         public async Task<IActionResult> GetProducts([FromQuery] GetProductsQuery query)
         {
             var result = await _mediator.Send(query);
@@ -34,15 +37,18 @@ namespace StockNexusAPI.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("productById")]
-        public async Task<IActionResult> GetProductById([FromQuery] int id)
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetProductById([FromRoute] int id)
         {
             var result = await _mediator.Send(new GetProductByIdQuery { Id = id });
 
             return Ok(result);
         }
 
-        [HttpDelete("product/{id}")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct([FromRoute] int id)
         {
             await _mediator.Send(new DeleteProductCommand { Id = id });

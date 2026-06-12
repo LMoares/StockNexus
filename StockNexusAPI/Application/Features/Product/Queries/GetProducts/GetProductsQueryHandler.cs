@@ -23,8 +23,6 @@ namespace StockNexusAPI.Application.Features.Product.Queries.GetProducts
                 query = query.Where(p => p.Description.Contains(request.SearchTerm));
             }
 
-            var totalCount = await query.CountAsync(token);
-
             var items = await query
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
