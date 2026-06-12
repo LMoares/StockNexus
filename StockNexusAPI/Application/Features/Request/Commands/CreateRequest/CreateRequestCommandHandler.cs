@@ -29,7 +29,7 @@ namespace StockNexusAPI.Application.Features.Request.Commands.CreateRequest
             if (employee == null) throw new KeyNotFoundException("Employee not found");
             if (employee.ManagerId == null) throw new InvalidOperationException("Requests cannot be submitted by employees without a manager");
 
-            var productRequest = new ProductRequest
+            var productRequest = new Domain.Entities.ProductRequest
             {
                 ProductId = request.ProductId,
                 Quantity = request.Quantity,

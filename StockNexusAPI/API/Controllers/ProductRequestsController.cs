@@ -22,12 +22,11 @@ namespace StockNexusAPI.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Employee")]
         public async Task<IActionResult> Create([FromBody] CreateRequestCommand command)
         {
-            // Set the EmployeeId from the authenticated user's claims
             var result = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetById), new { id = result });
+            return Created();
         }
 
         [HttpPut]
