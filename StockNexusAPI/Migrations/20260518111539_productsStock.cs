@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace StockNexusAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class productsandstock : Migration
+    public partial class productsStock : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

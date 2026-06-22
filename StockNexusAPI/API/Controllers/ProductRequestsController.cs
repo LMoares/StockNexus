@@ -26,7 +26,7 @@ namespace StockNexusAPI.API.Controllers
         public async Task<IActionResult> Create([FromBody] CreateRequestCommand command)
         {
             var result = await _mediator.Send(command);
-            return Created();
+            return CreatedAtAction(nameof(GetById), new {id = result}, new { Id = result});
         }
 
         [HttpPut]
