@@ -7,7 +7,7 @@ using StockNexusAPI.Application.Features.User.Commands.RegisterUser;
 namespace StockNexusAPI.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;

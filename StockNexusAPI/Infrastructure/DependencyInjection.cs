@@ -8,6 +8,8 @@ using StockNexusAPI.Application;
 using StockNexusAPI.Application.Interfaces;
 using StockNexusAPI.Application.Behaviors;
 using FluentValidation;
+using StockNexusAPI.Application.Common.Interfaces;
+using StockNexusAPI.Infrastructure.Services.UserService;
 
 namespace StockNexusAPI.Infrastructure
 {
@@ -17,6 +19,10 @@ namespace StockNexusAPI.Infrastructure
         {
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             return services;
         }

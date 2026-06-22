@@ -14,6 +14,8 @@ namespace StockNexusAPI.Infrastructure.Persistence
 
         public DbSet<Stock> Stock { get; set; }
 
+        public DbSet<ProductRequest> ProductRequests { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

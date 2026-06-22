@@ -7,7 +7,7 @@ using StockNexusAPI.Application.Features.User.Commands.RegisterUser;
 namespace StockNexusAPI.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/users")]
     public class UserController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -18,20 +18,20 @@ namespace StockNexusAPI.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost("admin")]
+        [HttpPost("admins")]
         public async Task<IActionResult> CreateAdmin([FromBody] RegisterAdminCommand command)
         {
             var result = await _mediator.Send(command);
 
-            return Ok(new { Message = "Admin user created successfully." });
+            return StatusCode(201, new { Message = "Admin user created successfully." });
         }
 
         [Authorize(Roles = "Admin, Manager")]
-        [HttpPost("user")]
+        [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] RegisterUserCommand command)
         {
             var result = await _mediator.Send(command);
-            return Ok(new { Message = "User registered successfully." });
+            return StatusCode(201, new { Message = "User registered successfully." });
         }
     }
 }

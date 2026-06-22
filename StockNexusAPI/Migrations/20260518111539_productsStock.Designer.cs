@@ -12,7 +12,7 @@ namespace StockNexusAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20260518111539_products and stock")]
-    partial class productsandstock
+    partial class productsStock
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
