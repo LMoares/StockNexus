@@ -36,6 +36,8 @@ namespace StockNexusAPI.Application.Features.ProductRequest.Queries.GetManagerPr
 
             return await query
                 .OrderByDescending(x => x.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .Select(x => new ProductRequestDto
                 {
                     Id = x.Id,

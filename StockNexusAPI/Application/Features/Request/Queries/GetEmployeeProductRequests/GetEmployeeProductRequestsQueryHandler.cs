@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using StockNexusAPI.Application.Common.Interfaces;
+using StockNexusAPI.Application.DTOs.Products;
 using StockNexusAPI.Application.DTOs.Requests;
 using StockNexusAPI.Infrastructure.Persistence;
 
@@ -36,6 +37,8 @@ namespace StockNexusAPI.Application.Features.ProductRequest.Queries.GetEmployeeP
 
             return await query
                 .OrderByDescending(x => x.CreatedAt)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
                 .Select(x => new ProductRequestDto
                 {
                     Id = x.Id,

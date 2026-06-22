@@ -24,6 +24,7 @@ namespace StockNexusAPI.Application.Features.Product.Queries.GetProducts
             }
 
             var items = await query
+                .OrderBy(x => x.Id)
                 .Skip((request.PageNumber - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(p => new ProductDto
