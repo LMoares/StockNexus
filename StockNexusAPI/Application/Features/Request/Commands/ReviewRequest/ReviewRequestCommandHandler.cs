@@ -21,7 +21,7 @@ namespace StockNexusAPI.Application.Features.Request.Commands.ReviewRequest
         {
             if (!_currentUserService.IsAuthenticated || !_currentUserService.UserId.HasValue)
             {
-                throw new InvalidOperationException("Only authenticated users can submit requests");
+                throw new InvalidOperationException("Only authenticated users can review requests");
             }
 
             var productRequest = await _context.ProductRequests
