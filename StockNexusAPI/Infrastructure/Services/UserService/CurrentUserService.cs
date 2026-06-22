@@ -1,4 +1,6 @@
 ﻿using StockNexusAPI.Application.Common.Interfaces;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace StockNexusAPI.Infrastructure.Services.UserService
 {
@@ -15,8 +17,13 @@ namespace StockNexusAPI.Infrastructure.Services.UserService
         {
             get
             {
-                var claim = _httpContextAccessor.HttpContext?.User?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-                return claim != null ? int.Parse(claim.Value) : null;
+                var principal = _httpContextAccessor.HttpContext?.User;
+                var claimValue =
+                    principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                        ??
+                    principal?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+                return int.TryParse(claimValue, out var userId) ? userId : null;
             }
         }
 
