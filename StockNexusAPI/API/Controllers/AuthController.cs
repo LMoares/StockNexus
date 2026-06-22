@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using StockNexusAPI.Application.Features.User.Commands.LoginUser;
 using StockNexusAPI.Application.Features.User.Commands.RegisterUser;
 
@@ -8,6 +9,7 @@ namespace StockNexusAPI.API.Controllers
 {
     [ApiController]
     [Route("api/")]
+    [EnableRateLimiting("StandardApiPolicy")]
     public class AuthController : ControllerBase
     {
         private readonly IMediator _mediator;

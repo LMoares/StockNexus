@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using StockNexusAPI.Application.Features.Product.Commands.DeleteProduct;
 using StockNexusAPI.Application.Features.Product.Commands.RegisterProduct;
 using StockNexusAPI.Application.Features.Product.Queries.GetProductById;
@@ -10,6 +11,7 @@ namespace StockNexusAPI.API.Controllers
 {
     [ApiController]
     [Route("api/products")]
+    [EnableRateLimiting("StandardApiPolicy")]
     public class ProductController : ControllerBase
     {
         private readonly IMediator _mediator;

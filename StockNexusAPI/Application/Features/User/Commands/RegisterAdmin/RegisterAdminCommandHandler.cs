@@ -16,11 +16,6 @@ namespace StockNexusAPI.Application.Features.User.Commands.RegisterAdmin
         {
             Domain.Entities.User? managerExists = null;
 
-            if (request.ManagerId != null)
-            {
-                managerExists = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.ManagerId.Value, token);
-            }
-
             var user = new Domain.Entities.User
             {
                 Email = request.Email.ToLower(),
@@ -28,7 +23,6 @@ namespace StockNexusAPI.Application.Features.User.Commands.RegisterAdmin
                 LastName = request.LastName,
                 Role = Domain.Enums.UserRole.Admin,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-                ManagerId = request.ManagerId,
                 Manager = managerExists
             };
 
