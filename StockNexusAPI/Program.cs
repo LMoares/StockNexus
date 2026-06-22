@@ -1,7 +1,22 @@
 using Microsoft.OpenApi;
 using StockNexusAPI.Infrastructure;
 using StockNexusAPI.Infrastructure.Services.Authentication;
+using StockNexusAPI.API.Extensions;
+using Serilog;
 var builder = WebApplication.CreateBuilder(args);
+
+//configure logging
+builder.Host.UseSerilog((context, configuration) =>
+{
+    configuration.ReadFrom.Configuration(context.Configuration);
+
+    var path = Path.Combine(context.HostingEnvironment.ContentRootPath, "Logs", "stocknexus-log-.txt");
+
+    configuration.WriteTo.File(
+        path: path,
+        rollingInterval: RollingInterval.Day,
+        outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
+});
 
 // Add services to the container.
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -9,6 +24,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddJWTAuthentication(builder.Configuration);
 
 builder.Services.AddApplicationServices();
+
+builder.Services.AddCustomRateLimiter();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -41,8 +58,6 @@ builder.Services.AddScoped<JwtService>();
 
 var app = builder.Build();
 
-app.UseStaticFiles();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -52,6 +67,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

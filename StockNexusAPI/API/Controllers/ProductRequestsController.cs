@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using StockNexusAPI.Application.Features.ProductRequest.Queries.GetEmployeeProductRequests;
 using StockNexusAPI.Application.Features.ProductRequest.Queries.GetManagerProductRequests;
 using StockNexusAPI.Application.Features.Request.Commands.CreateRequest;
@@ -12,6 +13,7 @@ namespace StockNexusAPI.API.Controllers
 {
     [ApiController]
     [Route("api/productRequests")]
+    [EnableRateLimiting("StandardApiPolicy")]
     public class ProductRequestsController : ControllerBase
     {
         private readonly IMediator _mediator;

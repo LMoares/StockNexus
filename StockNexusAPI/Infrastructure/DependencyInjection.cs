@@ -61,6 +61,7 @@ namespace StockNexusAPI.Infrastructure
                 cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
 
                 cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
             });
 
             services.AddValidatorsFromAssembly(typeof(ApplicationAssemblyMarker).Assembly);
