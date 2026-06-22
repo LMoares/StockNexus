@@ -18,8 +18,8 @@ namespace StockNexusAPI.Domain.Entities
         public int ManagerId { get; set; }
         public User Manager { get; set; } = null!;
 
-        public DateTime CreatedAt { get; set; }
-        public DateTime ReviewedAt { get; set; }
+        public DateTime CreatedAt { get; set; } 
+        public DateTime? ReviewedAt { get; set; }
 
     }
 }
