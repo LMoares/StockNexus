@@ -27,7 +27,10 @@ namespace StockNexusAPI.Infrastructure.Services.UserService
             }
         }
 
-        public string? Email => _httpContextAccessor.HttpContext?.User?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+        public string? Email => 
+            _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value
+                ??
+            _httpContextAccessor.HttpContext?.User?.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
 
         public bool IsAuthenticated => _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
     }
