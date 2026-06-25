@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using StockNexusAPI.Infrastructure.Persistence;
 
 namespace StockNexusAPI.Application.Features.Product.Commands.RegisterProduct
@@ -14,6 +15,10 @@ namespace StockNexusAPI.Application.Features.Product.Commands.RegisterProduct
 
         public async Task<Unit> Handle(RegisterProductCommand command, CancellationToken token)
         {
+            var productExists = await _context.Products.AnyAsync(x => x.Name == command.Name, token);
+
+            if (productExists) throw new InvalidOperationException($"Product with name '{command.Name}' already exists.");
+
             var product = new Domain.Entities.Product
             {
                 Name = command.Name,
