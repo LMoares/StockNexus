@@ -1,17 +1,16 @@
 ﻿using FluentAssertions;
 using Xunit;
+using StockNexusAPI.Application.Features.Product.Commands.RegisterProduct;
 using StockNexusAPI.Infrastructure.Persistence;
 using MediatR;
 using StockNexusAPI.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using StockNexusAPI.Application.Features.Product.Commands.DeleteProduct;
-using StockNexusAPI.Application.Features.Product.Commands.RegisterProduct;
+using StockNexusAPI.Application.Features.Product.Queries.GetProductById;
 
 namespace StockNexusAPI.UnitTests
 {
-    public class DeleteProductCommandHandlerTests
+    public class GetProductByIdQueryHandlerTests
     {
-
         private ApplicationDbContext CreateInMemoryContext()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -22,7 +21,7 @@ namespace StockNexusAPI.UnitTests
         }
 
         [Fact]
-        public async Task Handle_ValidCommand_ShouldDeleteProductAndReturnUnitValue()
+        public async Task Handle_ValidId_ShouldReturnProductDto()
         {
             // Arrange
             var context = CreateInMemoryContext();
@@ -37,48 +36,45 @@ namespace StockNexusAPI.UnitTests
 
             await registerHandler.Handle(registerCommand, CancellationToken.None);
 
-            var deleteHandler = new DeleteProductCommandHandler(context);
+            var queryHandler = new GetProductByIdQueryHandler(context);
 
-            var deleteCommand = new DeleteProductCommand
+            var queryCommand = new GetProductByIdQuery
             {
                 Id = 1
             };
 
             // Act
-            var result = await deleteHandler.Handle(deleteCommand, CancellationToken.None);
+            var result = await queryHandler.Handle(queryCommand, CancellationToken.None);
 
             // Assert
             result.Should().NotBeNull();
-
-            var isProductDeleted = await context.Products.FindAsync(deleteCommand.Id) == null;
-            isProductDeleted.Should().BeTrue();
-
+            result.Id.Should().Be(1);
+            result.Name.Should().Be("Test Product");
+            result.Description.Should().Be("Test Description");
+            result.UnitPrice.Should().Be(10.0m);
         }
 
         [Fact]
-        public async Task Handle_InvalidCommand_ShouldThrowKeyNotFoundException()
+        public async Task Handle_InvalidId_ShouldThrowKeyNotFoundException()
         {
             // Arrange
             var context = CreateInMemoryContext();
+            var queryHandler = new GetProductByIdQueryHandler(context);
 
-            var handler = new DeleteProductCommandHandler(context);
-
-            var command = new DeleteProductCommand()
+            var command = new GetProductByIdQuery
             {
                 Id = 999
             };
 
             // Act
-            Func<Task> act = async () => await handler.Handle(command, CancellationToken.None);
+            Func<Task> act = async () => await queryHandler.Handle(command, CancellationToken.None);
 
             // Assert
-            await act.Should().ThrowAsync<KeyNotFoundException>()
-                .WithMessage("Product with Id 999 not found.");
+            await act.Should().ThrowAsync<KeyNotFoundException>().WithMessage("Product with Id 999 not found.");
 
-            var doesProductExist = await context.Products.FindAsync(command.Id) != null;
+            var doesProductExist = await context.Products.AnyAsync(x => x.Id == 999);
             doesProductExist.Should().BeFalse();
-        }
 
-        
+        }
     }
 }
