@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../StockNexusAPI.UnitTests/StockNexusAPI.UnitTests.csproj" Id="e414a505-473a-4911-9e9f-dacb533f5a57" />
   <Project Path="StockNexusAPI.csproj" />
 </Solution>
