@@ -22,16 +22,20 @@ namespace StockNexusAPI.Application.Features.Request.Commands.CreateRequest
                 throw new InvalidOperationException("Only authenticated users can submit requests");
             }
 
-            var employee = await _context.Users
+            var employeeTask = _context.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == _currentUserService.UserId.Value, token);
+            var productExistsTask = _context.Products.
+                AsNoTracking()
+                .AnyAsync(x => x.Id == request.ProductId, token);
+
+            await Task.WhenAll(employeeTask, productExistsTask);
+
+            var employee = await employeeTask;
+            var productExists = await productExistsTask;
 
             if (employee == null) throw new KeyNotFoundException("Employee not found");
             if (employee.ManagerId == null) throw new InvalidOperationException("Requests cannot be submitted by employees without a manager");
-
-            var productExists = await _context.Products.
-                AsNoTracking()
-                .AnyAsync(x => x.Id == request.ProductId, token);
             if (!productExists) throw new KeyNotFoundException("Product not found");
 
             var productRequest = new Domain.Entities.ProductRequest

@@ -17,7 +17,6 @@ namespace StockNexusAPI.Application.Behaviors
             {
                 var context = new ValidationContext<TRequest>(request);
 
-                // Run all validators for this specific command asynchronously
                 var validationResults = await Task.WhenAll(
                     _validators.Select(v => v.ValidateAsync(context, cancellationToken)));
 
@@ -28,13 +27,11 @@ namespace StockNexusAPI.Application.Behaviors
 
                 if (failures.Count != 0)
                 {
-                    // If validation fails, throw an exception with the errors.
-                    // (You can also catch this in a global error handler to return 400 Bad Request)
                     throw new ValidationException(failures);
                 }
             }
 
-            return await next(); // Proceed to the handler if validation passes
+            return await next(); 
         }
     
     }

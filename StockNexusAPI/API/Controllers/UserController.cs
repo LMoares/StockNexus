@@ -24,7 +24,6 @@ namespace StockNexusAPI.API.Controllers
         public async Task<IActionResult> CreateAdmin([FromBody] RegisterAdminCommand command)
         {
             var result = await _mediator.Send(command);
-
             return StatusCode(201, new { Message = "Admin user created successfully." });
         }
 
