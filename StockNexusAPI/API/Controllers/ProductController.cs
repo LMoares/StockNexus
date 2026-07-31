@@ -26,7 +26,6 @@ namespace StockNexusAPI.API.Controllers
         public async Task<IActionResult> RegisterProduct([FromBody] RegisterProductCommand command)
         {
             var result = await _mediator.Send(command);
-
             return StatusCode(201, new { Message = "Product registered successfully"});
         }
 
@@ -35,7 +34,6 @@ namespace StockNexusAPI.API.Controllers
         public async Task<IActionResult> GetProducts([FromQuery] GetProductsQuery query)
         {
             var result = await _mediator.Send(query);
-
             return Ok(result);
         }
 
@@ -45,7 +43,6 @@ namespace StockNexusAPI.API.Controllers
         public async Task<IActionResult> GetProductById([FromRoute] int id)
         {
             var result = await _mediator.Send(new GetProductByIdQuery { Id = id });
-
             return Ok(result);
         }
 
